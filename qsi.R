@@ -64,7 +64,7 @@ QuadraticSplineInterpolation <- function(mtrx, verbose=FALSE) {
     equations
 }
 
-getQSI <- function(x, verbose=FALSE){
+getQSI <- function(x, verbose=FALSE, forPlot=FALSE){
     rows = dim(mtrx)[2]
     interval = NULL
     for(num in 1:(rows - 1)) {
@@ -74,17 +74,18 @@ getQSI <- function(x, verbose=FALSE){
         }
     }
     if(verbose) print(equations[[interval]])
-    if(!is.null(interval)) print(equations[[interval]](x))
+    if(!is.null(interval) && !forPlot) print(equations[[interval]](x))
+    else if(!is.null(interval) && forPlot) return(equations[[interval]](x))
     else print("Out of scope")
 }
 
-readCSV <- function(filepath, verbose=FALSE) {
+readQsiCSV <- function(filepath, verbose=FALSE) {
     if(is.null(filepath)) return(NULL)
     vec = scan(filepath, what=numeric(),sep=",")
     returnMtrx = matrix(vec, nrow=(length(vec) / 2), ncol=2, byrow=TRUE, dimnames=list(1:(length(vec) / 2), c("X", "Y")))
+    if(anyDuplicated(returnMtrx[,1]) > 0) return(TRUE)
     mtrx <<- matrix(vec, nrow=2, ncol=(length(vec) / 2))
-    equations <<- QuadraticSplineInterpolation(mtrx, verbose)
-    return(returnMtrx)
+    return(FALSE)
 }
 
 updateQsiMtrx <- function(updatedMtrx, verbose=FALSE) {

@@ -2,12 +2,12 @@ library(DT)
 
 qsiTab <- sidebarLayout(
     sidebarPanel(
-        fileInput("file1", "Choose CSV File", accept=c("text/csv","text/comma-separated-values,text/plain",".csv")),
+        fileInput("file1", "Choose CSV File", accept=c("text/csv", ".csv")),
         uiOutput("qsiNumInput"),
         uiOutput("qsiNumSlider"),
         fluidRow(
             column(6,
-                actionButton("estimateQSI", "Estimate")
+                actionButton("estimateQsi", "Estimate")
             ),
             column(6,
                 checkboxInput("qsiCheckBox", "Verbose", TRUE)
@@ -17,7 +17,8 @@ qsiTab <- sidebarLayout(
         DTOutput("qsiTable")
     ),
     mainPanel(
-        verbatimTextOutput("qsiOutput")
+        verbatimTextOutput("qsiOutput"),
+        plotOutput("qsiPlot")
     )
 )
 
