@@ -3,16 +3,23 @@ library(DT)
 qsiTab <- sidebarLayout(
     sidebarPanel(
         fileInput("file1", "Choose CSV File", accept=c("text/csv", ".csv")),
-        uiOutput("qsiNumInput"),
-        uiOutput("qsiNumSlider"),
         fluidRow(
             column(6,
-                actionButton("estimateQsi", "Estimate")
+                h5("Enter X:")
             ),
             column(6,
                 checkboxInput("qsiCheckBox", "Verbose", TRUE)
             )
         ),
+        fluidRow(
+            column(6,
+                   uiOutput("qsiNumInput")
+            ),
+            column(6,
+                   actionButton("estimateQsi", "Estimate")
+            )
+        ),
+        uiOutput("qsiNumSlider"),
         uiOutput("qsiHelpText"),
         DTOutput("qsiTable")
     ),
@@ -25,17 +32,24 @@ qsiTab <- sidebarLayout(
 prTab <- sidebarLayout(
     sidebarPanel(
         fileInput("file2", "Choose CSV File", accept=c("text/csv", ".csv")),
-        uiOutput("prNumInput"),
-        uiOutput("prNumSlider"),
-        uiOutput("prDegreeSlider"),
         fluidRow(
             column(6,
-                   actionButton("estimatePr", "Estimate")
+                   h5("Enter X:")
             ),
             column(6,
                    checkboxInput("prCheckBox", "Verbose", TRUE)
             )
         ),
+        fluidRow(
+            column(6,
+                   uiOutput("prNumInput")
+            ),
+            column(6,
+                   actionButton("estimatePr", "Estimate")
+            )
+        ),
+        uiOutput("prNumSlider"),
+        uiOutput("prDegreeSlider"),
         uiOutput("prHelpText"),
         DTOutput("prTable")
     ),

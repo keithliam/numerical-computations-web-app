@@ -40,7 +40,6 @@ readPrCSV <- function(filepath, degree, verbose=FALSE) {
     returnMtrx = matrix(vec, nrow=(length(vec) / 2), ncol=2, byrow=TRUE, dimnames=list(1:(length(vec) / 2), c("X", "Y")))
     prMtrx <<- matrix(vec, nrow=2, ncol=(length(vec) / 2))
     prEquation <<- PolynomialRegression(prMtrx[, 2], prMtrx[, 1], degree, verbose)
-    return(returnMtrx)
 }
 
 updatePrMtrx <- function(updatedMtrx, degree, verbose=FALSE) {

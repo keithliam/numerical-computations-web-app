@@ -30,9 +30,9 @@ server <- function(input, output) {
     output$qsiTable <- renderDT(values$qsiMtrx, selection='none', editable = T)
     output$qsiNumInput <- renderUI({
         if(values$qsiInputtedCSV) {
-            numericInput("qsiNumInput", "Enter X:", values$NumValueQsi, min=values$minQsi, max=values$maxQsi, step=0.01)
+            numericInput("qsiNumInput", NULL, values$NumValueQsi, min=values$minQsi, max=values$maxQsi, step=0.01)
         } else {
-            numericInput("qsiNumInputTemp", "Enter X:", 1, min=1, max=2, step=0.01)
+            numericInput("qsiNumInputTemp", NULL, 1, min=1, max=2, step=0.01)
         }
     })
     output$qsiNumSlider <- renderUI({
@@ -57,6 +57,9 @@ server <- function(input, output) {
     })
     observeEvent(input$qsiNumSlider, {
         values$qsiInputType <- "slider"
+        if(!is.null(input$qsiNumSlider)) {
+            printQsiOutput(getQSI, list(input$qsiNumSlider, values$qsiVerbose))
+        }
     })
     proxy = dataTableProxy('qsiTable')
     observeEvent(input$qsiTable_cell_edit, {
@@ -75,9 +78,8 @@ server <- function(input, output) {
         printQsiOutput(updateQsiMtrx, list(values$qsiMtrx, values$qsiVerbose))
     })
     observeEvent(input$estimateQsi, {
-        if(!(is.null(input$qsiNumInput) || is.na(input$qsiNumInput)) || !is.null(input$qsiNumSlider)) {
-            if(values$qsiInputType == "num") printQsiOutput(getQSI, list(input$qsiNumInput, values$qsiVerbose))
-            else printQsiOutput(getQSI, list(input$qsiNumSlider, values$qsiVerbose))
+        if(!(is.null(input$qsiNumInput) || is.na(input$qsiNumInput))) {
+            printQsiOutput(getQSI, list(input$qsiNumInput, values$qsiVerbose))
         }
     })
     output$qsiPlot <- renderPlot({
@@ -115,9 +117,9 @@ server <- function(input, output) {
     output$prTable <- renderDT(values$prMtrx, selection='none', editable = T)
     output$prNumInput <- renderUI({
         if(values$prInputtedCSV) {
-            numericInput("prNumInput", "Enter X:", values$numValuePr, min=values$minPr, max=values$maxPr, step=0.01)
+            numericInput("prNumInput", NULL, values$numValuePr, min=values$minPr, max=values$maxPr, step=0.01)
         } else {
-            numericInput("prNumInputTemp", "Enter X:", 1, min=1, max=2, step=0.01)
+            numericInput("prNumInputTemp", NULL, 1, min=1, max=2, step=0.01)
         }
     })
     output$prNumSlider <- renderUI({
@@ -153,6 +155,11 @@ server <- function(input, output) {
     })
     observeEvent(input$prNumSlider, {
         values$prInputType <- "slider"
+        if(values$prDegreeSliderChanged) {
+            printPrOutput(updatePrMtrx, list(values$prMtrx, values$prDegreeSlider, values$prVerbose))
+            values$prEquation <- prEquation
+        }
+        if(!is.null(input$prNumSlider)) printPrOutput(getPr, list(input$prNumSlider, values$prVerbose))
     })
     proxy = dataTableProxy('prTable')
     observeEvent(input$prTable_cell_edit, {
@@ -173,11 +180,10 @@ server <- function(input, output) {
         
     })
     observeEvent(input$estimatePr, {
-        if(!(is.null(input$prNumInput) || is.na(input$prNumInput)) || !is.null(input$prNumSlider)) {
+        if(!(is.null(input$prNumInput) || is.na(input$prNumInput))) {
             if(values$prDegreeSliderChanged) printPrOutput(updatePrMtrx, list(values$prMtrx, values$prDegreeSlider, values$prVerbose))
             values$prEquation <- prEquation
-            if(values$prInputType == "num") printPrOutput(getPr, list(input$prNumInput, values$prVerbose))
-            else printPrOutput(getPr, list(input$prNumSlider, values$prVerbose))
+            printPrOutput(getPr, list(input$prNumInput, values$prVerbose))
         }
         values$prDegreeSliderChanged <- FALSE
     })
