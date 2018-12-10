@@ -17,8 +17,8 @@ qsiTab <- sidebarLayout(
         DTOutput("qsiTable")
     ),
     mainPanel(
-        verbatimTextOutput("qsiOutput"),
-        plotOutput("qsiPlot")
+        plotOutput("qsiPlot"),
+        verbatimTextOutput("qsiOutput")
     )
 )
 
