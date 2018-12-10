@@ -60,7 +60,7 @@ prTab <- sidebarLayout(
 )
 
 ui <- navbarPage(
-    "CMSC 150",
+    "Numerical Methods",
     inverse = TRUE,
     tabPanel("Quadratic Spline Interpolation", qsiTab),
     tabPanel("Polynomial Regression", prTab),
